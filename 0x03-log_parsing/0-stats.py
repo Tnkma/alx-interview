@@ -13,7 +13,7 @@ def extract_input(input_line):
     Returns:
         _type_: _description_ -> A dictionary containing the status code
     """
-    
+
     fp = (
         r'\s*(?P<ip>\S+)\s*',
         r'\s*\[(?P<date>\d+\-\d+\-\d+ \d+:\d+:\d+\.\d+)\]',
