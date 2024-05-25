@@ -12,4 +12,16 @@ True
 >>> print(validUTF8([229, 65, 127, 256]))
 False
 
+>>> print(validUTF8([467, 133, 108]))
+True
+
+>>> print(validUTF8([240, 188, 128, 167]))
+True
+
+>>> print(validUTF8([345, 467]))
+False
+
+>>> print(validUTF8([]))
+True
+
 """

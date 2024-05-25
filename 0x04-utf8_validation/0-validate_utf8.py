@@ -6,34 +6,46 @@ def validUTF8(data):
     """ Checks if a data set represents a valid UTF-8 encoding
 
     Args:
-        data (int, optional): _description_ The data set to validate
+        data (list of int): The data set to validate
     """
-    # set he byte to o first
-    byte_number = 0
-    # get the mask of the most significant bit
-    mask1 = 1 << 7
-    mask2 = 1 << 6
 
-    # iterate over the data
+    # Handle empty data list
+    if not data:
+        return True
+
+    byte_number = 0
+    mask1 = 1 << 7  # 10000000 in binary
+    mask2 = 1 << 6  # 01000000 in binary
+
+    # Iterate over each number in the data list
     for num in data:
-        # Ensure were only counting the last 8 bits
+        # Ensure the number is within the valid byte range (0-255)
+        if num < 0 or num > 255:
+            return False
+
+        # Work with the last 8 bits
         byte = num & 0xFF
-        # if byte number is 0
+
         if byte_number == 0:
-            # count the number of bits in the byte
-            while byte & (mask1 << byte_number):
-                # increment the byte number
+            # Determine the number of bytes in the UTF-8 character
+            mask = 1 << 7
+            while mask & byte:
                 byte_number += 1
-            # if the byte is 0, it is a single byte character
+                mask >>= 1
+
+            # If byte_number is 0, it's a single-byte character (0xxxxxxx)
             if byte_number == 0:
-                return True
-            # if the byte is more than 4 bytes long, it is invalid
+                continue
+
+            # If byte_number is 1 or more than 4, it's invalid
             if byte_number == 1 or byte_number > 4:
                 return False
         else:
-            # if the byte is not a continuation byte, it is invalid
+            # Check if the byte is a valid continuation byte (10xxxxxx)
             if not (byte & mask1 and not (byte & mask2)):
                 return False
-        # decrement the byte number
+
+        # Decrement the byte_number
         byte_number -= 1
-        return byte_number == 0
+    # If byte_number is not 0, there are missing continuation bytes
+    return byte_number == 0
