@@ -8,7 +8,7 @@ def minOperations(n):
         n (_type_): the number of characters to be printed
 
     Returns:
-        _type_: the minimum number of operations needed to 
+        _type_: the minimum number of operations needed to
         result in exactly n H characters in the file
     """
     if n <= 1:
